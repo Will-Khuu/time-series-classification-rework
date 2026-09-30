@@ -4,5 +4,4 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 data/AReM/
-.audit/
 *.egg-info/
