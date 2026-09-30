@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arwsn"
+version = "0.1.0"
+description = "Human activity recognition from wireless sensor network RSS data (UCI AReM)"
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "scipy", "scikit-learn", "statsmodels", "matplotlib", "seaborn"]
+
+[project.optional-dependencies]
+dev = ["pytest", "jupyter", "nbconvert"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
