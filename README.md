@@ -41,4 +41,6 @@ python -m venv .venv
 
 - `data/` holds the download script, the duplicate check, and the dataset notes.
 - `src/arwsn/loading.py` parses all recordings into one table and drops the copies.
-- `tests/` checks the loader against the original notebooks' parser on every file.
+- `src/arwsn/features.py` turns each recording into one row of segment statistics.
+- `tests/` checks the loader and features against the original notebook code on every file.
+- `scripts/verify.py` runs every check and writes [`reports/verification.md`](reports/verification.md).
