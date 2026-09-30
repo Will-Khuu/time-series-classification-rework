@@ -52,6 +52,18 @@ MUTATIONS = [
              "use population std instead of sample std", "tests/test_features.py"),
     Mutation("src/arwsn/features.py", "[0.25, 0.5, 0.75]", "[0.2, 0.5, 0.75]",
              "compute the wrong first quartile", "tests/test_features.py"),
+    Mutation("src/arwsn/evaluation.py", "train_ids, test_ids = ids[train], ids[test]",
+             "train_ids, test_ids = ids, ids[test]",
+             "let held-out recordings into selection and fitting (the leak nested CV prevents)", "tests/test_evaluation.py"),
+    Mutation("src/arwsn/evaluation.py", "center = (p + z**2 / (2 * n))", "center = (p + z**2 / n)",
+             "break the Wilson interval formula", "tests/test_evaluation.py"),
+    Mutation("src/arwsn/evaluation.py", "best_l = int(inner.index[inner.to_numpy().argmax()])",
+             "best_l = int(inner.index[::-1][inner.to_numpy()[::-1].argmax()])",
+             "break ties toward the largest l", "tests/test_evaluation.py"),
+    Mutation("src/arwsn/evaluation.py", "outer_cv.split(ids, y, groups)", "outer_cv.split(ids, y)",
+             "ignore groups, so copies can split across folds", "tests/test_evaluation.py"),
+    Mutation("src/arwsn/evaluation.py", "    groups = groups.loc[ids] if groups is not None else None\n", "",
+             "match groups to recordings by position instead of by id", "tests/test_evaluation.py"),
 ]
 
 
