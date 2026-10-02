@@ -2,9 +2,9 @@
 
 **Overall: PASS.** Regenerate with `python scripts/verify.py`.
 
-- Generated: 2026-10-01 01:36 UTC
-- Code fingerprint: `b3f6d745cb3cff79` (SHA-256 of every `.py` file in `src`, `tests`, `data`, `scripts`)
-- Checked on top of commit `494f316`; the fingerprint identifies the exact code
+- Generated: 2026-10-02 17:37 UTC
+- Code fingerprint: `322effb3884ec4b2` (SHA-256 of every `.py` file in `src`, `tests`, `data`, `scripts`)
+- Checked on top of commit `c965612`; the fingerprint identifies the exact code
 - Python 3.12.14 on Darwin arm64
 - numpy 2.5.3, pandas 3.0.6, scipy 1.18.1, scikit-learn 1.9.1, pytest 9.1.1
 
@@ -28,16 +28,28 @@
 `data/check_independence.py` found 8 duplicate pairs covering 7 copied files.
 They match the `COPIES` constant in `src/arwsn/loading.py`.
 
-## Reproduction of the original notebook: PASS
+## Reproduction of the course version: PASS
 
-Reran the notebook's method on its original 69/19 split (`results/metrics.json`, part `reproduce`).
+Reran the course version's method on its 69/19 split (`results/metrics.json`, part `reproduce`).
 
-| Task | Per-l CV scores vs notebook (20 each) | Test result | Notebook test result |
+| Task | Per-l CV scores vs course version (20 each) | Test result | Course version test result |
 |---|---|---|---|
 | binary | max difference 0.0000 | 19/19 | 1.000 |
 | multiclass | max difference 0.0005 | 17/19 | 0.895 |
 
-The notebook printed multiclass scores to 3 decimals, so differences up to 0.0005 are rounding.
+The course version printed multiclass scores to 3 decimals, so differences up to 0.0005 are rounding.
+
+## README numbers match the results: PASS
+
+| Number computed from `results/metrics.json` | In README |
+|---|---|
+| 74/81 (91.4%), 95% CI 83.2% to 95.8% | yes |
+| 79/81 (97.5%), 95% CI 91.4% to 99.3% | yes |
+| 77/81 (95.1%), 95% CI 88.0% to 98.1% | yes |
+| 17/19 (89.5%), 95% CI 68.6% to 97.1% | yes |
+| 19/19 (100.0%), 95% CI 83.2% to 100.0% | yes |
+| 18.5% | yes |
+| 84.0% | yes |
 
 ## Mutation checks: PASS
 

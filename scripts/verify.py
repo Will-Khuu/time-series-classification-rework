@@ -147,8 +147,8 @@ def reproduction() -> tuple[bool, list[str]]:
     r = json.loads(metrics.read_text()).get("reproduce")
     if r is None:
         return False, ["No reproduction results; run `python scripts/run_experiments.py reproduce`."]
-    lines = ["Reran the notebook's method on its original 69/19 split (`results/metrics.json`, part `reproduce`).", "",
-             "| Task | Per-l CV scores vs notebook (20 each) | Test result | Notebook test result |", "|---|---|---|---|"]
+    lines = ["Reran the course version's method on its 69/19 split (`results/metrics.json`, part `reproduce`).", "",
+             "| Task | Per-l CV scores vs course version (20 each) | Test result | Course version test result |", "|---|---|---|---|"]
     ok = True
     for task in ["binary", "multiclass"]:
         t = r[task]
@@ -156,8 +156,26 @@ def reproduction() -> tuple[bool, list[str]]:
         ok &= task_ok
         lines.append(f"| {task} | max difference {t['max_abs_diff_vs_notebook']:.4f} | "
                      f"{t['test']['correct']}/{t['test']['n']} | {t['notebook_test_accuracy']:.3f} |")
-    lines += ["", "The notebook printed multiclass scores to 3 decimals, so differences up to 0.0005 are rounding."]
+    lines += ["", "The course version printed multiclass scores to 3 decimals, so differences up to 0.0005 are rounding."]
     return ok, lines
+
+
+def readme_numbers() -> tuple[bool, list[str]]:
+    metrics = json.loads((ROOT / "results" / "metrics.json").read_text())
+    readme = (ROOT / "README.md").read_text()
+
+    def claim(r: dict) -> str:
+        low, high = r["ci95"]
+        return f"{r['correct']}/{r['n']} ({r['accuracy']:.1%}), 95% CI {low:.1%} to {high:.1%}"
+
+    nested, reproduce = metrics["nested"], metrics["reproduce"]
+    expected = [claim(nested[t]) for t in ["multiclass", "binary_notebook_rfecv", "binary"]]
+    expected += [claim(reproduce[t]["test"]) for t in ["multiclass", "binary"]]
+    expected += [f"{nested[t]['majority_baseline']:.1%}" for t in ["multiclass", "binary"]]
+    lines = ["| Number computed from `results/metrics.json` | In README |", "|---|---|"]
+    found = [(e, e in readme) for e in expected]
+    lines += [f"| {e} | {'yes' if ok else 'MISSING'} |" for e, ok in found]
+    return all(ok for _, ok in found), lines
 
 
 def mutations() -> tuple[bool, list[str]]:
@@ -188,7 +206,8 @@ def main() -> None:
         ("Test suite", test_suite),
         ("Dataset integrity", dataset_integrity),
         ("Duplicate recordings", duplicates),
-        ("Reproduction of the original notebook", reproduction),
+        ("Reproduction of the course version", reproduction),
+        ("README numbers match the results", readme_numbers),
         ("Mutation checks", mutations),
     ]
     body, verdicts = [], []
