@@ -8,6 +8,7 @@ Usage: python scripts/verify.py
 """
 
 import hashlib
+import json
 import os
 import platform
 import subprocess
@@ -139,6 +140,26 @@ def duplicates() -> tuple[bool, list[str]]:
     return ok, lines
 
 
+def reproduction() -> tuple[bool, list[str]]:
+    metrics = ROOT / "results" / "metrics.json"
+    if not metrics.exists():
+        return False, ["`results/metrics.json` missing; run `python scripts/run_experiments.py`."]
+    r = json.loads(metrics.read_text()).get("reproduce")
+    if r is None:
+        return False, ["No reproduction results; run `python scripts/run_experiments.py reproduce`."]
+    lines = ["Reran the notebook's method on its original 69/19 split (`results/metrics.json`, part `reproduce`).", "",
+             "| Task | Per-l CV scores vs notebook (20 each) | Test result | Notebook test result |", "|---|---|---|---|"]
+    ok = True
+    for task in ["binary", "multiclass"]:
+        t = r[task]
+        task_ok = t["max_abs_diff_vs_notebook"] <= 0.0005 and abs(t["test"]["accuracy"] - t["notebook_test_accuracy"]) < 1e-9
+        ok &= task_ok
+        lines.append(f"| {task} | max difference {t['max_abs_diff_vs_notebook']:.4f} | "
+                     f"{t['test']['correct']}/{t['test']['n']} | {t['notebook_test_accuracy']:.3f} |")
+    lines += ["", "The notebook printed multiclass scores to 3 decimals, so differences up to 0.0005 are rounding."]
+    return ok, lines
+
+
 def mutations() -> tuple[bool, list[str]]:
     lines = ["| Deliberate bug | File | Caught by |", "|---|---|---|"]
     all_caught = True
@@ -167,6 +188,7 @@ def main() -> None:
         ("Test suite", test_suite),
         ("Dataset integrity", dataset_integrity),
         ("Duplicate recordings", duplicates),
+        ("Reproduction of the original notebook", reproduction),
         ("Mutation checks", mutations),
     ]
     body, verdicts = [], []

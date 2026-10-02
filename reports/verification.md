@@ -2,21 +2,22 @@
 
 **Overall: PASS.** Regenerate with `python scripts/verify.py`.
 
-- Generated: 2026-09-30 23:47 UTC
-- Code fingerprint: `f5ad28ca0bf3ced2` (SHA-256 of every `.py` file in `src`, `tests`, `data`, `scripts`)
-- Checked on top of commit `b8aefee`; the fingerprint identifies the exact code
+- Generated: 2026-10-01 01:36 UTC
+- Code fingerprint: `b3f6d745cb3cff79` (SHA-256 of every `.py` file in `src`, `tests`, `data`, `scripts`)
+- Checked on top of commit `494f316`; the fingerprint identifies the exact code
 - Python 3.12.14 on Darwin arm64
 - numpy 2.5.3, pandas 3.0.6, scipy 1.18.1, scikit-learn 1.9.1, pytest 9.1.1
 
 ## Test suite: PASS
 
-72 passed, 0 failed, 0 skipped.
+76 passed, 0 failed, 0 skipped.
 
 | Test file | Passed | Failed | Skipped |
 |---|---|---|---|
 | `tests/test_evaluation.py` | 15 | 0 | 0 |
 | `tests/test_features.py` | 46 | 0 | 0 |
 | `tests/test_loading.py` | 11 | 0 | 0 |
+| `tests/test_models.py` | 4 | 0 | 0 |
 
 ## Dataset integrity: PASS
 
@@ -26,6 +27,17 @@
 
 `data/check_independence.py` found 8 duplicate pairs covering 7 copied files.
 They match the `COPIES` constant in `src/arwsn/loading.py`.
+
+## Reproduction of the original notebook: PASS
+
+Reran the notebook's method on its original 69/19 split (`results/metrics.json`, part `reproduce`).
+
+| Task | Per-l CV scores vs notebook (20 each) | Test result | Notebook test result |
+|---|---|---|---|
+| binary | max difference 0.0000 | 19/19 | 1.000 |
+| multiclass | max difference 0.0005 | 17/19 | 0.895 |
+
+The notebook printed multiclass scores to 3 decimals, so differences up to 0.0005 are rounding.
 
 ## Mutation checks: PASS
 
