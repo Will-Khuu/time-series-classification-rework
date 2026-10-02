@@ -23,8 +23,8 @@ baseline.** Every recording was predicted by a model that never saw it, using ne
 
 - **The six-activity result holds up.** It matches the course version's 89.5% with four times the evidence and a
   much narrower interval. All five outer folds chose the same setting, one segment per recording.
-- **The bending result was smaller than 100%.** The course version's 100% came from 19 test recordings, four of
-  which had an exact copy in training. On the 81 unique recordings under nested cross-validation, the course method
+- **The bending result rested on thin evidence.** The course version's 100% came from 19 test recordings, four of
+  which had an exact copy in training, and its own 95% interval reached down to 83.2%. On the 81 unique recordings under nested cross-validation, the course method
   scores 97.5%. The L1 pipeline used for six activities scores 95.1%: it never raises a false alarm but misses 4 of
   the 13 bending recordings. Both beat an 84.0% baseline, which is high because most recordings are not bending.
 - **The errors are among still postures.** Of the seven six-activity errors, three confuse sitting with standing
